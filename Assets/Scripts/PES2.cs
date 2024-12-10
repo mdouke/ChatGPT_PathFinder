@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;  // UIコンポーネントの名前空間
 
-public class PES : MonoBehaviour
+public class PES2 : MonoBehaviour
 {
     public InputField inputField;
     public Button checkButton;
@@ -34,7 +34,7 @@ public class PES : MonoBehaviour
                             + "Left1\n"
                             + "Down2\n"
                             + ",,,";
-    private string gtf = "given the field:";
+    private string gtf = "Given the field:";
     //private string note = "Note: You must navigate the path to the goal point without touching the obstacles";
     void Start()
     {
@@ -53,7 +53,7 @@ public class PES : MonoBehaviour
         string inputFieldText = inputField.text;
         modes = fms.modes;
         //combine inputFieldText and modes, changing the line below
-        Text_to_Send = inputFieldText + " in the given field \n" + backgroundOrder + "\n\n" + example + "\n\n" + representive + "\n\n" + gtf + "\n" + modes/* + "\n" + note*/;
+        Text_to_Send = inputFieldText + "\n" + backgroundOrder + "\n\n" + example + "\n\n" + representive + "\n\n" + gtf + "\n" + modes/* + "\n" + note*/;
         Debug.Log(Text_to_Send);
     }
 
