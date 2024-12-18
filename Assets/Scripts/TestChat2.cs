@@ -54,7 +54,10 @@ public class TestChat2 : MonoBehaviour
     public GameObject promptEditor;
     private PES pes;
 
-    public Button sendButton;  // 送信ボタンを宣言
+    public Button sendButton;  // 
+    public string responseText;  // ユーザーからの入力に対する応答を表示するTextを宣言
+    GameObject receiver;
+    RMS rMS;
 
     private MessageModel assistantModel = new()
     {
@@ -70,6 +73,9 @@ public class TestChat2 : MonoBehaviour
 
         communicationHistory.Add(assistantModel);
         pes = promptEditor.GetComponent<PES>();
+
+        receiver = GameObject.Find("Receiver");
+        rMS = receiver.GetComponent<RMS>();
         
         // ボタンクリックで入力を送信
         sendButton.onClick.AddListener(() => {
@@ -124,7 +130,10 @@ public class TestChat2 : MonoBehaviour
                 var responseString = operation.webRequest.downloadHandler.text;
                 var responseObject = JsonUtility.FromJson<ChatGPTRecieveModel>(responseString);
                 communicationHistory.Add(responseObject.choices[0].message);
-                Debug.Log(responseObject.choices[0].message.content);
+                responseText = responseObject.choices[0].message.content;
+                rMS.isResponseChanged = true;
+                //Debug.Log(responseString);
+                //Debug.Log(responseObject.choices[0].message.content);
             }
             request.Dispose();
         };
@@ -139,6 +148,6 @@ public class TestChat2 : MonoBehaviour
 
         // 入力欄をクリア
         inputField.text = "";
-        fms.modes = "";
+        //fms.modes = "";
     }
 }

@@ -22,18 +22,18 @@ public class PES : MonoBehaviour
                                 + "P:the path to go\n";
     private string example = "Expected output format example:\n"
                             + "the coordinates\n"
-                            + ",,,\n"
+                            //+ "```\n"
                             + "The start point:(0,0)\n"
                             + "The goal point:(4,4)\n"
                             + "The obstacles:(2,2)and(3,3)\n"
-                            + ",,,\n"
+                            //+ "```\n"
                             + "the output\n"
-                            + ",,,\n"
-                            + "Right3\n"
-                            + "Up4\n"
+                            //+ "```\n"
+                            + "Right 3\n"
+                            + "Up 4\n"
                             + "Left1\n"
-                            + "Down2\n"
-                            + ",,,";
+                            + "Down 2\n";
+                            //+ "```";
     private string gtf = "given the field:";
     //private string note = "Note: You must navigate the path to the goal point without touching the obstacles";
     void Start()
