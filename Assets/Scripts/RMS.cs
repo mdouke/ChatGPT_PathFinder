@@ -72,7 +72,7 @@ public class RMS : MonoBehaviour
             for (int j = 0; j < 2; j++)
             {
                 outputWords[i, j] = words[j];
-                Debug.Log("outputWordsの"+ i + "行"+ j + "列目: " + outputWords[i, j]);
+                //Debug.Log("outputWordsの"+ i + "行"+ j + "列目: " + outputWords[i, j]);
             }
         }
         sMS.isOutputGenerated = true;
