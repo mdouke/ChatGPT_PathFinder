@@ -9,11 +9,14 @@ public class PES : MonoBehaviour
     public GameObject fieldManager;
     private FMS fms;
 
+    public GameObject simulator;
+    private SMS sms;
+
     private string modes;
 
     public string Text_to_Send;
 
-    private string backgroundOrder = "Also, you will answer the coordinates of the start point, the goal point and the obstacles and provide the output in the requested format using directions: 'Up', 'Down', 'Left', and 'Right' with natural number.\n\n"
+    private string backgroundOrder = "Also, you will answer the coordinates of the start point, the goal point and the obstacles and provide the output in the requested format using directions: 'Up', 'Down', 'Left', and 'Right' with natural number. And, you cannot navigate out of the given field.\n\n"
                                     + "You must not answer anything except for what I ordered.";
     private string representive = "Each element is represented by letter:\n"
                                 + "S:the starting point\n"
@@ -40,12 +43,35 @@ public class PES : MonoBehaviour
     {
         fms = fieldManager.GetComponent<FMS>();
         
+        simulator = GameObject.Find("Simulator");
+        sms = simulator.GetComponent<SMS>();
     }
 
     void Update()
     {
         //modes = fms.modes;
         //Debug.Log(modes);
+
+        if (sms.isHitObstacle)
+        {
+            Text_to_Send = "The path you suggeted is blocked by the obstacle at (" + sms.posRow + ", " + sms.posCol + ") when the movement from the start was " + string.Join(", ", sms.moves);
+            Debug.Log(Text_to_Send);
+            sms.isHitObstacle = false;
+        }
+
+        if (sms.isGetOutOfField)
+        {
+            Text_to_Send = "The path you suggeted is out of the field when the movement from the start was " + string.Join(", ", sms.moves);
+            Debug.Log(Text_to_Send);
+            sms.isGetOutOfField = false;
+        }
+
+        if (sms.isNotGoalReached)
+        {
+            Text_to_Send = "The path you suggeted is not reached to the goal point when the movement from the start was " + string.Join(", ", sms.moves);
+            Debug.Log(Text_to_Send);
+            sms.isNotGoalReached = false;
+        }
     }
 
     public void Edit_FirstPrompt()

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SMS : MonoBehaviour
@@ -7,10 +9,14 @@ public class SMS : MonoBehaviour
     public bool isOutputGenerated = false;
     private string[,] outputWords;
     private BMS[,] bmsButtons;
-    private int posRow;
-    private int posCol;
-    //private bool isHitObstacle = false;
-    //private string[,] finishedMoves;
+    public int posRow;
+    public int posCol;
+    public List<string> moves = new List<string>();
+    public bool isHitObstacle = false;
+    public bool isGetOutOfField = false;
+    private List<Tuple<int, int>> goalPositions = new List<Tuple<int, int>>();
+    public bool isGoalReached = false;
+    public bool isNotGoalReached = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,6 +62,8 @@ public class SMS : MonoBehaviour
         //Debug.Log(outputWords.GetLength(0) + " " + outputWords.GetLength(1));
 
         searchStart();
+        searchGoal();
+        moves.Clear();
         movement();
 
     }
@@ -77,8 +85,25 @@ public class SMS : MonoBehaviour
         }
     }
 
+    void searchGoal()
+    {
+        // ゴールボタンを探して、その座標を取得
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if (bmsButtons[i, j].GetCurrentMode() == BMS.Mode.Goal)
+                {
+                    goalPositions.Add(new Tuple<int, int>(i, j));
+                }
+            }
+        }
+    }
+
     void movement()
     {
+        //List<string> moves = new List<string>();
+        //bool isHitObstacle = false;
         for (int i = 0; i < outputWords.GetLength(0); i++)
         {
             //outputWords[i,1]をint型に変換
@@ -88,41 +113,93 @@ public class SMS : MonoBehaviour
                 if (outputWords[i, 0] == "right")
                 {
                     posCol++;
+                    moves.Add("Right");
+
+                    if (posCol >= 5)//フィールド外に出たかどうかを判定
+                    {
+                        isGetOutOfField = true;
+                        break;
+                    }
+
                     if (bmsButtons[posRow, posCol].GetCurrentMode() == BMS.Mode.Obstacle)
                     {
-                        //isHitObstacle = true;
-                        Debug.Log("Hit obstacle at (" + posRow + ", " + posCol + ")");
+                        isHitObstacle = true;
                         break;
                     }
                 } else if (outputWords[i, 0] == "left")
                 {
                     posCol--;
+                    moves.Add("Left");
+
+                    if (posCol < 0)//フィールド外に出たかどうかを判定
+                    {
+                        isGetOutOfField = true;
+                        break;
+                    }
+
                     if (bmsButtons[posRow, posCol].GetCurrentMode() == BMS.Mode.Obstacle)
                     {
-                        //isHitObstacle = true;
-                        Debug.Log("Hit obstacle at (" + posRow + ", " + posCol + ")");
+                        isHitObstacle = true;
                         break;
                     }
                 } else if (outputWords[i, 0] == "up")
                 {
                     posRow--;
+                    moves.Add("Up");
+
+                    if (posRow < 0)//フィールド外に出たかどうかを判定
+                    {
+                        isGetOutOfField = true;
+                        break;
+                    }
+                    
                     if (bmsButtons[posRow, posCol].GetCurrentMode() == BMS.Mode.Obstacle)
                     {
-                        //isHitObstacle = true;
-                        Debug.Log("Hit obstacle at (" + posRow + ", " + posCol + ")");
+                        isHitObstacle = true;
                         break;
                     }
                 } else if (outputWords[i, 0] == "down")
                 {
                     posRow++;
+                    moves.Add("Down");
+
+                    if (posRow >= 5)//フィールド外に出たかどうかを判定
+                    {
+                        isGetOutOfField = true;
+                        break;
+                    }
+                    
                     if (bmsButtons[posRow, posCol].GetCurrentMode() == BMS.Mode.Obstacle)
                     {
-                        //isHitObstacle = true;
-                        Debug.Log("Hit obstacle at (" + posRow + ", " + posCol + ")");
+                        isHitObstacle = true;
                         break;
                     }
                 }
             }
+            if (isHitObstacle || isGetOutOfField)
+            {
+                //Debug.Log("Hit obstacle at (" + posRow + ", " + posCol + ")");
+                break;
+            }
         }
+        Debug.Log("Suggested moves: " + string.Join(", ", moves));
+
+        // ゴールに到達したかどうかを判定
+        if (isHitObstacle != true && isGetOutOfField != true)
+        {
+            foreach (var goalPosition in goalPositions)
+            {
+                if (posRow == goalPosition.Item1 && posCol == goalPosition.Item2)
+                {
+                    isGoalReached = true;
+                    Debug.Log("Goal reached at (" + posRow + ", " + posCol + ")");
+                    break;
+                } else
+                {
+                    isNotGoalReached = true;
+                }
+            }
+        }
+        
     }
 }

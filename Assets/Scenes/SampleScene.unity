@@ -5222,6 +5222,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOutputGenerated: 0
+  posRow: 0
+  posCol: 0
+  moves: []
+  isHitObstacle: 0
+  isGetOutOfField: 0
+  isGoalReached: 0
+  isNotGoalReached: 0
 --- !u!4 &950117995
 Transform:
   m_ObjectHideFlags: 0
@@ -7207,6 +7214,7 @@ MonoBehaviour:
   inputField: {fileID: 771471551}
   checkButton: {fileID: 1740743288}
   fieldManager: {fileID: 1211094150}
+  simulator: {fileID: 0}
   Text_to_Send: 
 --- !u!4 &1550710664
 Transform:
