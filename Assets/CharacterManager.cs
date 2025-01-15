@@ -96,16 +96,16 @@ public class CharacterManager : MonoBehaviour
             switch (simulatorManager.moves[i])
             {
                 case "Up":
-                    yield return MoveOverTime(new Vector3(0, 1, -1), 1f);
+                    yield return MoveOverTime(new Vector3(0, 1, 0), 1f);
                     break;
                 case "Down":
-                    yield return MoveOverTime(new Vector3(0, -1, -1), 1f);
+                    yield return MoveOverTime(new Vector3(0, -1, 0), 1f);
                     break;
                 case "Left":
-                    yield return MoveOverTime(new Vector3(-1, 0, -1), 1f);
+                    yield return MoveOverTime(new Vector3(-1, 0, 0), 1f);
                     break;
                 case "Right":
-                    yield return MoveOverTime(new Vector3(1, 0, -1), 1f);
+                    yield return MoveOverTime(new Vector3(1, 0, 0), 1f);
                     break;
             }
         }
