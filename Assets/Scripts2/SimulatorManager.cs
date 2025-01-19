@@ -208,7 +208,8 @@ public class SimulatorManager : MonoBehaviour
                 {
                     isGoalReached = true;
                     isNotGoalReached = false;
-                    Debug.Log("Goal reached at (" + posRow + ", " + posCol + ")");
+                    Debug.Log("Goal reached at (" + posRow + ", " + posCol + ") in the simulation.");
+                    FindAnyObjectByType<DebugConsoleUI>().Log("Unity: Simulation completed. The character starts to move.");
                     break;
                 } else
                 {

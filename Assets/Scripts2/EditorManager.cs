@@ -74,6 +74,7 @@ public class EditorManager : MonoBehaviour
         {
             Text_to_Send = "The path you suggeted is blocked by the obstacle at (" + simulatorManager.posRow + ", " + simulatorManager.posCol + ") when the movement from the start was " + string.Join(", ", simulatorManager.moves);
             //Debug.Log(Text_to_Send);
+            FindAnyObjectByType<DebugConsoleUI>().Log("From Unity to ChatGPT: " + Text_to_Send);
             simulatorManager.isHitObstacle = false;
             submitToChatGPT = true;
         }
@@ -81,6 +82,7 @@ public class EditorManager : MonoBehaviour
         {
             Text_to_Send = "The path you suggeted is out of the field when the movement from the start was " + string.Join(", ", simulatorManager.moves);
             //Debug.Log(Text_to_Send);
+            FindAnyObjectByType<DebugConsoleUI>().Log("From Unity to ChatGPT: " + Text_to_Send);
             simulatorManager.isGetOutOfField = false;
             submitToChatGPT = true;
         }
@@ -88,6 +90,7 @@ public class EditorManager : MonoBehaviour
         {
             Text_to_Send = "The path you suggeted is not reached to the goal point when the movement from the start was " + string.Join(", ", simulatorManager.moves);
             //Debug.Log(Text_to_Send);
+            FindAnyObjectByType<DebugConsoleUI>().Log("From Unity to ChatGPT: " + Text_to_Send);
             simulatorManager.isNotGoalReached = false;
             submitToChatGPT = true;
         }
@@ -149,6 +152,7 @@ public class EditorManager : MonoBehaviour
     public void Edit_FirstPrompt()
     {
         string inputFieldText = inputField.text;
+        FindAnyObjectByType<DebugConsoleUI>().Log("You: " + inputFieldText);
         //combine inputFieldText and modes, changing the line below
         Text_to_Send = inputFieldText + " in the given field \n" + backgroundOrder + "\n\n" + example + "\n" + representive + "\n" +  "given the field\n" + modes/* + "\n" + note*/;
         //Debug.Log(Text_to_Send);

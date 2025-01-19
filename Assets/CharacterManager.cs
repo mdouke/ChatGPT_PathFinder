@@ -7,11 +7,14 @@ public class CharacterManager : MonoBehaviour
     private GameObject[,] tiles;
     private bool isIdle;
     private bool isOnStart;
+    private bool isOnGoal;
+    private bool isCompleted;
     private Vector3 startPosition;
     private GameObject simulator;
     private SimulatorManager simulatorManager;
     private GameObject resetButton;
     private ResetManager resetManager;
+    private Vector3 finalPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +36,10 @@ public class CharacterManager : MonoBehaviour
         }
         isIdle = true;
 
+        isOnStart = false;
+        isOnGoal = false;
+        isCompleted = false;
+
         simulator = GameObject.Find("Simulator");
         simulatorManager = simulator.GetComponent<SimulatorManager>();
 
@@ -48,13 +55,15 @@ public class CharacterManager : MonoBehaviour
             isIdle = true;
             isOnStart = false;
             resetManager.restCharacter = false;
+            isOnGoal = false;
+            isCompleted = false;
         }
 
         //Debug.Log(isIdle);
         if (isIdle)
         {
             transform.localPosition = new Vector3(0, 0, -1);
-            searchStart();     
+            searchStart();  
             //isIdle = false;
         }
         else if (isOnStart)
@@ -64,8 +73,23 @@ public class CharacterManager : MonoBehaviour
 
         if (simulatorManager.isGoalReached)
         {
+            
             // コルーチンを開始
             StartCoroutine(PerformMoves());
+            //Debug.Log("PerformMoves");
+        }
+
+        if (isOnGoal)
+        {
+            if (isCompleted)
+            {
+                //searchGoal();
+                //Debug.Log("Goal position: " + goalPosition);
+                FindAnyObjectByType<DebugConsoleUI>().Log("Unity: Mission Completed. Please press the Reset button to play again.");
+                isCompleted = false;
+            }
+            //transform.localPosition = goalPosition;
+            transform.localPosition = finalPosition;
         }
     }
 
@@ -89,8 +113,13 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    private bool isMoving = false;
+
     private IEnumerator PerformMoves()
     {
+        if (isMoving) yield break;  // Prevent running the coroutine if it's already running
+        isMoving = true;
+
         for (int i = 0; i < simulatorManager.moves.Count; i++)
         {
             switch (simulatorManager.moves[i])
@@ -109,7 +138,21 @@ public class CharacterManager : MonoBehaviour
                     break;
             }
         }
+
+        if (!isCompleted)  // Only set isCompleted to true if it hasn't been set yet
+        {
+            isOnGoal = true;
+            isCompleted = true;
+            finalPosition = transform.localPosition;
+        }
+
+        simulatorManager.isGoalReached = false;
+        isMoving = false;
     }
+
+
+
+
 
     private IEnumerator MoveOverTime(Vector3 direction, float duration)
     {
