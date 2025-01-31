@@ -59,7 +59,7 @@ public class TestChat3 : MonoBehaviour
         role = "system",
         content = "You are a navigator"
     };
-    private readonly string apiKey = "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";
+    private readonly string apiKey = "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";
     private List<MessageModel> communicationHistory = new();
 
     void Start()
