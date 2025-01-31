@@ -16,7 +16,7 @@ public class EditorManager : MonoBehaviour
                                 + "G:the goal point\n"
                                 + "O:the obstacle to avoid\n"
                                 + "P:the path to go\n"
-                                + "I:the item to get\n";
+                                + "I:the item\n";
     private string example = "Expected output format example:\n"
                             + "the coordinates\n"
                             + "The start point:(0,0)\n"
